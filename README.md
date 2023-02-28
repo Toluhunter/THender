@@ -11,7 +11,7 @@ This system is designed to be run on a remote server this allows the forwarding 
 
 1. Setup required enironment variables, you can do this by adding it to the the system global environmnet variables or by creating a **.env** and placing it in the config directory, as of now the only required environment variable is **SECRET_KEY** Note: it is case sensitive
 
-2. Install depenencies in the requirements.txt using this command `pip install -r requirements.txt`, then use the command `python manage.py runserver 0.0.0.0:<port>` to run the server. Alternatively you make use of docker which is recommended, have docker isntalled in yoour system then run the following commands:
+2. Install depenencies in the requirements.txt using this command `pip install -r requirements.txt`, then use the command `python manage.py runserver 0.0.0.0:<port>` to run the server. Alternatively you can make use of docker which is recommended, have docker installed on your system then run the following commands:
 
 ```
 docker build -t thender .
