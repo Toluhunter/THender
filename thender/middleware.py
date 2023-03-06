@@ -3,6 +3,7 @@ from urllib.parse import parse_qs
 from django.contrib.auth.models import AnonymousUser
 from django.contrib.auth import get_user_model
 from rest_framework_simplejwt.tokens import AccessToken
+from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 from channels.db import database_sync_to_async
 
 
@@ -13,17 +14,22 @@ Account = get_user_model()
 def get_user(token):
 
     user = AnonymousUser()
+    user_id = None
 
     try:
         access = AccessToken(token=token)
         user_id = access.get("user_id")
 
-        account = Account.objects.filter(id=user_id)
-
-        if account.exists():
-            user = account.first()
-    except:
+    except InvalidToken:
         pass
+
+    except TokenError:
+        pass
+
+    account = Account.objects.filter(id=user_id)
+
+    if account.exists():
+        user = account.first()
 
     return user
 

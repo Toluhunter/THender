@@ -1,3 +1,6 @@
+'''
+Required for inital setup configuration of django
+'''
 import os
 import django
 

@@ -1,29 +1,29 @@
 from django.shortcuts import get_object_or_404
+from django.http import Http404
 from django.contrib.auth import get_user_model
 
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.parsers import MultiPartParser
 from rest_framework import status
 
-from .serializers import AccountSerializer, LoginSerializer, CreateAccountSerializer
+from . import serializers
 
 User = get_user_model()
 
+
 class RegisterView(generics.CreateAPIView):
 
-    serializer_class = CreateAccountSerializer
-    parser_classes = [MultiPartParser]
+    serializer_class = serializers.CreateAccountSerializer
 
 
 class LoginView(generics.GenericAPIView):
 
-    serializer_class  = LoginSerializer
+    serializer_class = serializers.LoginSerializer
 
     def post(self, request):
-        
+
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data["user"]
@@ -36,23 +36,24 @@ class LoginView(generics.GenericAPIView):
 
         return Response(response, status=status.HTTP_200_OK)
 
-        
+
 class RetrieveUpdateView(generics.RetrieveUpdateAPIView):
 
     permission_classes = [IsAuthenticated]
-    serializer_class = AccountSerializer
+    serializer_class = serializers.AccountSerializer
 
     def get_object(self):
-        
+
         obj = self.request.user
         self.check_object_permissions(request=self.request, obj=obj)
 
         return obj
 
+
 class ProfileView(generics.RetrieveAPIView):
 
     permission_classes = [IsAuthenticated]
-    serializer_class = AccountSerializer
+    serializer_class = serializers.AccountSerializer
 
     def get_object(self):
 
@@ -63,5 +64,19 @@ class ProfileView(generics.RetrieveAPIView):
 
         return obj
 
-class FetchFriendView(generics.RetrieveAPIView):
+
+class SearchUserView(generics.ListAPIView):
+
+    serializer_class = serializers.FetchUserSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        username = self.request.GET.get("q", None)
+        if not username:
+            raise Http404("Invalid query")
+
+        return User.objects.filter(username__icontains=username)
+
+
+class FetchFriendView(generics.ListAPIView):
     pass

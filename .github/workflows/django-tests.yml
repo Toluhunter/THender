@@ -40,3 +40,7 @@ jobs:
       - name: Run Test Cases
         run:  |
           python manage.py test
+      
+      - name: Testing styling
+        run:  |
+          flake8

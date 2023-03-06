@@ -6,17 +6,19 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 User = get_user_model()
 
+
 class Peer(models.Model):
     user = models.ManyToManyField(to=User, related_name="peers")
+
 
 class Transmission(models.Model):
 
     def set_id(self):
 
         id = uuid4()
-        while(Transmission.objects.filter(id=id).exists()):
+        while (Transmission.objects.filter(id=id).exists()):
             id = uuid4()
-        
+
         return id
 
     id = models.UUIDField(null=False, primary_key=True)
@@ -62,17 +64,17 @@ class History(models.Model):
 
     id = models.UUIDField(null=False, primary_key=True)
     reciever = models.ForeignKey(
-        to=User, 
+        to=User,
         null=True,
         related_name="recieved",
         on_delete=models.SET_NULL
-        )
+    )
     sender = models.ForeignKey(
-        to=User, 
+        to=User,
         null=True,
-        related_name="sent", 
+        related_name="sent",
         on_delete=models.SET_NULL
-        )
+    )
     filename = models.CharField(max_length=80, null=False, blank=False)
     startdate = models.DateTimeField(auto_now_add=True, null=False)
     enddate = models.DateTimeField(null=True)
@@ -80,14 +82,14 @@ class History(models.Model):
         null=False,
         validators=[MaxValueValidator(1), MinValueValidator(-1)],
         default=SENDING
-        )
+    )
 
     def set_id(self):
 
         id = uuid4()
-        while(Transmission.objects.filter(id=id).exists()):
+        while (Transmission.objects.filter(id=id).exists()):
             id = uuid4()
-        
+
         return id
 
     def save(self, *args, **kwargs):
