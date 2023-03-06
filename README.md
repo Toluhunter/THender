@@ -1,7 +1,7 @@
 # THender (Tolu Hunter's sender)
 
 ## Overview
-A file transfer websocket application, built using django rest framework application to enable cross platform transfer of data i.e (music, videos, executables, documents) without being stored on an intermediary server. This ensures data privacy and provides an alternative method of sending large files accross the internet without dealing with the complexities of torrents or the limitations of cloud storage
+A Web Socket Based File Transfer application, built using Django rest framework application to enable cross-platform transfer of data such as music, videos, executables, documents without being stored on an intermediary server. This ensures data privacy and provides an alternative method of sending large files across the internet without dealing with the complexities of torrents or the limitations of cloud storage. This ensures data privacy and provides an alternative method of sending large files across the internet without dealing with the complexities of torrents or the limitations of cloud storage
 
 ## Usage
 
