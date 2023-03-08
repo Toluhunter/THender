@@ -14,4 +14,4 @@ urlpatterns = [
     path("token/refresh/", TokenRefreshView.as_view(), name="token-refresh"),
     path("health/", HealthCheckView.as_view(), name="health-check"),
     path("peer/", include('peer.urls'))
-] + static(settings.MEDIA_URL, document_root=settings.MEDUA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
