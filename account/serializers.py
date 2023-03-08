@@ -79,3 +79,22 @@ class FetchUserSerializer(serializers.ModelSerializer):
             "username",
             "profile_picture",
         ]
+
+
+class TokenRefreshSerializer(serializers.Serializer):
+    refresh = serializers.CharField()
+
+    def validate(self, attrs):
+        refresh = self.token_class(attrs["refresh"])
+
+        data = {"access": str(refresh.access_token)}
+
+        refresh.blacklist()
+
+        refresh.set_jti()
+        refresh.set_exp()
+        refresh.set_iat()
+
+        data["refresh"] = str(refresh)
+
+        return data

@@ -76,7 +76,3 @@ class SearchUserView(generics.ListAPIView):
             raise Http404("Invalid query")
 
         return User.objects.filter(username__icontains=username)
-
-
-class FetchFriendView(generics.ListAPIView):
-    pass
