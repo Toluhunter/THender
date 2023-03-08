@@ -21,7 +21,7 @@ class CreateAccountSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
-
+        validated_data["username"] = validated_data["username"].lower()
         return self.Meta.model.objects.create_user(
             **validated_data
         )
@@ -58,7 +58,7 @@ class LoginSerializer(serializers.Serializer):
     def validate(self, attrs):
 
         user = authenticate(
-            username=attrs["username"],
+            username=attrs["username"].lower(),
             password=attrs["password"]
         )
 
