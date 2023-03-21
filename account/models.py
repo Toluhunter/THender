@@ -66,6 +66,15 @@ class Account(AbstractBaseUser, PermissionsMixin):
         max_length=70
     )
 
+    @property
+    def is_online(self):
+        try:
+            self.online
+        except:
+            return False
+
+        return True
+
     profile_picture = models.ImageField(null=True, blank=True, upload_to=set_name)
 
     objects = CustomUserManager()

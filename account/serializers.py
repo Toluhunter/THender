@@ -46,7 +46,7 @@ class AccountSerializer(serializers.ModelSerializer):
             "email",
             "first_name",
             "last_name",
-            "profile_picture"
+            "profile_picture",
         ]
 
 
