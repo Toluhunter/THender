@@ -13,5 +13,6 @@ urlpatterns = [
     path("search/", SearchUserView.as_view(), name="user"),
     path("token/refresh/", TokenRefreshView.as_view(), name="token-refresh"),
     path("health/", HealthCheckView.as_view(), name="health-check"),
-    path("peer/", include('peer.urls'))
+    path("peer/", include('peer.urls')),
+    path("transmission/", include("transmission.urls"))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

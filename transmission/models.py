@@ -25,14 +25,16 @@ class Transmission(models.Model):
         related_name="sending"
     )
 
+    file_name = models.CharField(max_length=80, null=False, blank=False)
     file_location = models.TextField(null=False, blank=False, unique=True)
-    file_hash = models.CharField(max_length=65, null=False, blank=False, unique=True)
+    file_hash = models.CharField(max_length=65, null=False, blank=False)
 
     bytes_sent = models.PositiveBigIntegerField(null=False, blank=False, default=0)
 
     total_size = models.PositiveBigIntegerField(null=False, blank=False)
 
     accepted = models.BooleanField(default=False, null=False, blank=False)
+    start_date = models.DateTimeField(auto_now_add=True, null=False, blank=False)
 
     def save(self, *args, **kwargs):
 
@@ -40,7 +42,7 @@ class Transmission(models.Model):
         return super().save(*args, **kwargs)
 
     def __str__(self):
-        return f'{self.file_hash}{self.sender}{self.reciever}'
+        return f'{self.file_hash} {self.sender} {self.reciever}'
 
 
 class Transfer(models.Model):
@@ -53,12 +55,10 @@ class Transfer(models.Model):
 
 class History(models.Model):
 
-    SENDING = 0
     SUCCESS = 1
     FAILED = -1
 
     choices = (
-        (SENDING, "Sending"),
         (SUCCESS, "success"),
         (FAILED, "Failed")
     )
@@ -77,12 +77,12 @@ class History(models.Model):
         on_delete=models.SET_NULL
     )
     filename = models.CharField(max_length=80, null=False, blank=False)
-    startdate = models.DateTimeField(auto_now_add=True, null=False)
-    enddate = models.DateTimeField(null=True)
+    start_date = models.DateTimeField(blank=False, null=False)
+    end_date = models.DateTimeField(auto_now_add=True, null=False, blank=False)
     status = models.SmallIntegerField(
         null=False,
         validators=[MaxValueValidator(1), MinValueValidator(-1)],
-        default=SENDING
+
     )
 
     def save(self, *args, **kwargs):
