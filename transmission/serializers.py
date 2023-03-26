@@ -40,6 +40,12 @@ class CreateTransmissionSerializer(serializers.ModelSerializer):
             "id"
         ]
 
+    def validate(self, attrs):
+        user = self.context["request"].user
+
+        if not user.peer.peers.filter(id=attrs["reciever"].id).exists():
+            raise serializers.ValidationError("Reciever is not one of your peers")
+
     def create(self, validated_data):
         request = self.context["request"]
 
