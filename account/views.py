@@ -75,4 +75,4 @@ class SearchUserView(generics.ListAPIView):
         if not username:
             raise Http404("Invalid query")
 
-        return User.objects.filter(username__icontains=username)
+        return User.objects.filter(username__icontains=username).exclude(username=self.request.user.username)

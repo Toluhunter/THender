@@ -1,3 +1,5 @@
+from django.http import Http404
+
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -27,7 +29,10 @@ class FetchPeerRequestView(generics.ListAPIView):
         if type_requests == "recieved":
             return PeerRequest.objects.filter(user=self.request.user)
 
-        return PeerRequest.objects.filter(sender=self.request.user)
+        elif type_requests == "sent":
+            return PeerRequest.objects.filter(sender=self.request.user)
+
+        raise Http404("Invalid type")
 
 
 class ReplyPeerRequestView(generics.GenericAPIView):

@@ -48,7 +48,12 @@ class RequestSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Pending request already made to this user")
 
         if sender.peer.peers.filter(id=attrs["user"].id).exists():
+            # If the target user for the peer request is already in users peers prevent request
             raise serializers.ValidationError("You and this users are already peers")
+
+        if attrs["user"] == sender:
+            # Prevent authenticated user from send a peer request to themselves
+            raise serializers.ValidationError("You cannot send a request to yourself")
 
         return attrs
 
@@ -67,7 +72,6 @@ class ReplyPeerRequestSerializer(serializers.Serializer):
         user = request.user
 
         peer_request = PeerRequest.objects.filter(id=attrs["peer_request"])
-        print(attrs['peer_request'])
         if not peer_request.exists() or peer_request.first().user != user:
             raise serializers.ValidationError("Invalid request")
 
