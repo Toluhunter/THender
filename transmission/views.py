@@ -44,6 +44,19 @@ class PendingTransmissionView(generics.ListAPIView):
         return Transmission.objects.filter(reciever=self.request.user, accepted=False)
 
 
+class FetchAcceptedTransmission(generics.ListAPIView):
+    '''
+    Returns List of accepted Transmission Where the the user is either
+    the sender or the reciever
+    '''
+    serializer_class = TransmissionSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return Transmission.objects.filter(Q(sender=user) | Q(reciever=user), accepted=True)
+
+
 class DeleteTransmissionView(mixins.DestroyModelMixin, generics.GenericAPIView):
 
     permission_classes = [IsAuthenticated, IsParticipant]
